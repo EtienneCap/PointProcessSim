@@ -58,7 +58,6 @@ intensity = function(x, y, d_tot = 1, A = 5){
 }
 
 # Homogeneous process
-
 x_max = 8
 y_max = 8
 lambda = 10 
@@ -81,10 +80,10 @@ for (i in 1:N){
 x = seq(-x_max, x_max, length.out = 50)
 y = seq(-y_max, y_max, length.out = 50)
 
-z = outer(x, y, function(x,y) intensity(x, y, d_tot = 2, A = lambda))
+z = outer(x, y, function(x,y) intensity(x, y, d_tot = 2, A = lambda)) # Contour plot of the intensity function
 
 
-plot(point_pattern_x, point_pattern_y, pch = 1, col ='red')
-contour(x, y, z, xlab = "x", ylab = "y", main = "Point process realisation", xlim = c(-x_max, x_max), ylim = c(-y_max, y_max), add = T, lwd =  2)
+plot(point_pattern_x, point_pattern_y, pch = 1, col ='red', xlab = "x", ylab = "y", main = "Point process realisation")
+contour(x, y, z, xlim = c(-x_max, x_max), ylim = c(-y_max, y_max), add = T, lwd =  2)
 points(final_point_pattern_x, final_point_pattern_y, pch = 8, col = "blue") 
 
