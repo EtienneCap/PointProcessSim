@@ -55,11 +55,11 @@ kernel_function = function(t, alpha, beta){
 
 d = 3
 
-T_tot = 10
+T_tot = 2
 
-base_rate = matrix(data = abs(rnorm(d)), nrow = d)
-alpha = matrix(data = abs(rnorm(d^2, mean = 0.5)), nrow = d)
-beta = matrix(data = abs(rnorm(d^2, mean = 5)), nrow = d)
+base_rate = matrix(data = c(1,6,3), nrow = d)
+alpha = matrix(data = 1, nrow = d, ncol = d)
+beta = matrix(data = 3, nrow = d, ncol = d)
 
 print(base_rate)
 print(alpha)
@@ -73,7 +73,6 @@ for (i in 1:d){
 s = 0
 
 while (s<T_tot){
-  print(s)
   lambda = rep(0, d)
   for (m in 1:d){
     lambda[m] = base_rate[m] 
@@ -82,7 +81,7 @@ while (s<T_tot){
     }
   }
   lambda0 = sum(lambda)
-  print(paste0("lambda =", lambda0))
+  # print(paste0("lambda =", lambda0))
   u = runif(1)
   w = -log(u)/lambda0
   s = s + w
@@ -119,6 +118,8 @@ for (i in 1:N){
   }
   lambda_t[,i]= lambda
 }
+
+par(mfrow = c(d,1))
 
 for (i in 1:d){
   plot(t, lambda_t[i,], type = 'l', col = 'red', ylim = c(0, max(lambda_t[i,])), xlab = "", ylab = "Intensity function")

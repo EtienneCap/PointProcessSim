@@ -1,0 +1,44 @@
+/* General font size for the presentation */
+body {
+  font-size: 0.9em; /* Adjust the base font size */
+}
+
+/* Specific font sizes for slide content */
+.reveal .slides section {
+  font-size: 0.9em; /* Adjust the font size for slide content */
+}
+
+/* Font size for headers */
+.reveal h1 {
+  font-size: 1.75em; /* Adjust the font size for H1 headers */
+}
+
+.reveal h2 {
+  font-size: 1.5em; /* Adjust the font size for H2 headers */
+}
+
+.reveal h3 {
+  font-size: 1.25em; /* Adjust the font size for H3 headers */
+}
+
+/* Font size for lists */
+.reveal ul {
+  font-size: 0.9em; /* Adjust the font size for lists */
+}
+
+.reveal ol {
+  font-size: 0.9em; /* Adjust the font size for ordered lists */
+}
+
+.reveal {
+  width: 100%; /* Use the full width of the container */
+  padding: 0 0em; /* Adjust padding as needed */
+}
+
+.reveal .slides {
+  padding: 0; /* Remove padding from slides */
+}
+
+.reveal section {
+  padding: 0 0em; /* Adjust padding for slide content */
+}

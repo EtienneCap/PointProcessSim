@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.3.433">
 
   <meta name="author" content="Etienne Caprioli">
-  <meta name="dcterms.date" content="2024-05-30">
+  <meta name="dcterms.date" content="2024-06-03">
   <title>Point processes</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -116,6 +116,7 @@
       margin-left: 2em;
     }  </style>
   <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="custom.css">
   <link href="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -427,7 +428,7 @@ Etienne Caprioli
     </div>
 </div>
 
-  <p class="date">May 30, 2024</p>
+  <p class="date">June 3, 2024</p>
 </section>
 <section class="slide level2">
 
@@ -449,7 +450,7 @@ before rendering execute in the terminal:
 <ul>
 <li>Poisson point processes</li>
 <li>Cox point processes</li>
-<li>Hawkes point process</li>
+<li>Hawkes point processes</li>
 </ul></li>
 <li>Some properties of point processes
 <ul>
@@ -457,13 +458,14 @@ before rendering execute in the terminal:
 <li>Simple point processes</li>
 <li>Mean measure and intenisty function</li>
 <li>Rescaling theorem</li>
+<li>Waiting times</li>
 <li>Operations on point processes</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <h3 id="simulating-point-processes">Simulating point processes</h3>
 <ul>
-<li>Point processes
+<li>Poisson point processes
 <ul>
 <li>Homogeneous Poisson point process (1D &amp; 2D)</li>
 <li>Non-homogeneous Poisson point process (1D &amp; 2D)</li>
@@ -503,6 +505,25 @@ before rendering execute in the terminal:
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>Consider a state space <span class="math inline">\(\mathbb{S}\)</span> (usually <span class="math inline">\(\mathbb{R}\)</span>, <span class="math inline">\([0, +\infty)\)</span>, or <span class="math inline">\(\mathbb{R}^n\)</span>).</p>
+<p>We know the stochastic processes which is a collection of random variables indexed by a 1D space. The point processes are kind of the extension of stochastic processes to multi-dimensional space. It can be interpreted in 2 ways:</p>
+<ul>
+<li><p>A point process is a random set of points that lies within <span class="math inline">\(\mathbb{S}\)</span>.</p></li>
+<li><p>A point process can also be defined as a random counting measure, that counts the number of points in any subset of <span class="math inline">\(\mathbb{S}\)</span>.</p></li>
+</ul>
+<p>A point <em>pattern</em> is a realisation of a point process.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="some-basic-notation" class="slide level2">
 <h2>Some basic notation</h2>
@@ -538,32 +559,75 @@ N(B) \sim D(B)
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>There is a sort of duality in the notation of Point processes. - Th first way to look at it is to consider the point process as a random set of points in <span class="math inline">\(\mathbb{S}\)</span>. - The second way is to consider <span class="math inline">\(N\)</span> as a counting measure, that counts the number of points in any subregion <span class="math inline">\(B\)</span> of <span class="math inline">\(\mathbb{S}\)</span>. Both ntation are equivalent, and sometime one notation is more convenient than the other and sometime the other one is more convenient, depending on the context.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="some-basic-notation-2" class="slide level2">
 <h2>Some basic notation</h2>
 <p>One can then compute the expectation of these indexed random variable (the expectation will always depend on the Borel set <span class="math inline">\(B\)</span> we consider):</p>
 <p><span class="math display">\[
 \mathbb{E}(N(B)) = \mathbb{E} \left[ \sum_{x_i \in N} 1_B(x_i) \right]
-\]</span> Note theat this expectation is also called the <em>mean measure</em> of <span class="math inline">\(N\)</span></p>
+\]</span> Note that this expectation is also called the <em>mean measure</em> of <span class="math inline">\(N\)</span></p>
+<aside class="notes">
+<p>The expectation is the expectation of the counting measure (we can’t compute the expectation of a set of points)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="main-examples-of-point-processes" class="slide level2">
 <h2>Main examples of point processes</h2>
 <h3 id="the-homogeneous-poisson-point-process">The homogeneous Poisson point process</h3>
 <p>Formally, a Poisson point process <span class="math inline">\(N\)</span> is a point process that satisfies the following properties:</p>
 <ul>
-<li>The number of points <span class="math inline">\(N(B)\)</span> in any borel set <span class="math inline">\(B \subset \mathbb{S}\)</span> is a Poisson-distributed random variable with mean <span class="math inline">\(\Lambda(B) = \lambda |B|\)</span>, where <span class="math inline">\(|B|\)</span> is the size of <span class="math inline">\(B\)</span> in <span class="math inline">\(\mathbb{S}\)</span>.</li>
+<li>The number of points <span class="math inline">\(N(B)\)</span> in any Borel set <span class="math inline">\(B \subset \mathbb{S}\)</span> is a Poisson-distributed random variable with mean <span class="math inline">\(\Lambda(B) = \lambda |B|\)</span>, where <span class="math inline">\(|B|\)</span> is the size of <span class="math inline">\(B\)</span> in <span class="math inline">\(\mathbb{S}\)</span>.</li>
 <li>If <span class="math inline">\(B_1, \dots, B_k\)</span> are disjoint (<span class="math inline">\(B_i \cap B_j = \emptyset, i \neq j\)</span>), then <span class="math inline">\(N(B_1), \dots, N(B_k)\)</span> are independent.</li>
 </ul>
 <p>We can therefore write:</p>
 <p><span class="math display">\[
 \forall B \subset \mathbb{S},\quad \forall n \in \mathbb{N}, \quad \mathbb{P}(N(B) = n) = e^{-\lambda |B|}\frac{(\lambda |B|)^n}{n!}
 \]</span></p>
+<aside class="notes">
+<p>The Poisson process is the canonical example of point processes. It plays approximately the same role as the uniform distribution for classical random variables. It is defined as the following:</p>
+<ul>
+<li>The number of points <span class="math inline">\(N(B)\)</span> in any Borel set <span class="math inline">\(B \subset \mathbb{S}\)</span> is a Poisson-distributed random variable with mean <span class="math inline">\(\Lambda(B) = \lambda |B|\)</span>, where <span class="math inline">\(|B|\)</span> is the size of <span class="math inline">\(B\)</span> in <span class="math inline">\(\mathbb{S}\)</span>. (For instance the surface area in 2D, the volume in 3D, or the length (or duration) in 1D).</li>
+<li>If <span class="math inline">\(B_1, \dots, B_k\)</span> are disjoint (<span class="math inline">\(B_i \cap B_j = \emptyset, i \neq j\)</span>), then <span class="math inline">\(N(B_1), \dots, N(B_k)\)</span> are independent.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="main-examples-of-point-processes-1" class="slide level2">
 <h2>Main examples of point processes</h2>
 <h3 id="example-of-a-1d-homogeneous-poisson-point-process">Example of a 1D homogeneous Poisson point process</h3>
 
-<img data-src="presentation_files/figure-revealjs/Poisson_process_example-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/Poisson_process_example-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">The “random set of point” is in blue, the counting measure <span class="math inline">\(N_{[0, t)} := N_t\)</span> is in red and the intensity function is the black dashed line.</p></section>
 <section id="main-examples-of-point-processes-2" class="slide level2">
 <h2>Main examples of point processes</h2>
 <h3 id="non-homogeneous-poisson-point-process">Non-homogeneous Poisson point process</h3>
@@ -589,12 +653,39 @@ N(B) \sim D(B)
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>The non-homogeneous poisson process is essentially the same as the homogeneous one but we change the mean function, basically we let <span class="math inline">\(\lambda\)</span> vary with <span class="math inline">\(x \in \mathbb{S}\)</span>, but needs to be non-negative. The homogeneous Poisson point process is just a non-homogeneous poisson point process with <span class="math inline">\(\lambda = \text{cst}\)</span>.</p>
+<p>Note however that the intensity function <span class="math inline">\(\lambda\)</span> is deterministic.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="main-example-of-point-processes" class="slide level2">
 <h2>Main example of point processes</h2>
 <h3 id="example-of-a-1-d-non-homogeneous-poisson-point-process">Example of a 1-D Non-homogeneous Poisson point process</h3>
 
-<img data-src="presentation_files/figure-revealjs/non_homogeneous_poisson_process-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/non_homogeneous_poisson_process-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">The “random set of point” is in blue, the counting measure <span class="math inline">\(N_{[0, t)} := N_t\)</span> is in red and the intensity function is the black dashed line.</p><aside class="notes">
+<p>The only difference here is the non constant so-called intensity function (which I will define properly later on). It basically changes the rates at which the points are coming: the higher the rates, the more points occur.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="main-examples-of-point-processes-3" class="slide level2">
 <h2>Main examples of point processes</h2>
 <h3 id="the-cox-point-process">The Cox point process</h3>
@@ -616,6 +707,19 @@ N(B) \sim D(B)
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>The Cox process generalises the Poisson process by letting <span class="math inline">\(\lambda\)</span> be random. The mean measure <span class="math inline">\(\Lambda(B)\)</span> is now a random variable that depends on the sub region <span class="math inline">\(B\)</span> where it is evaluated.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="main-examples-of-point-processes-4" class="slide level2">
 <h2>Main examples of point processes</h2>
@@ -626,7 +730,20 @@ N(B) \sim D(B)
 </ul>
 <p><span class="math display">\[
 \lambda(s |\mathcal{H}_s)= \mu(s) + \int_{-\infty}^s h(s-t)dN_t = \mu(s) + \sum_{T_i&lt;s}h(s-T_i)
-\]</span> where <span class="math inline">\(N=\{T_i\}_i\)</span> and <span class="math inline">\(h\)</span> is a function called kernel.</p>
+\]</span> where <span class="math inline">\(N=\{T_i\}_i\)</span> and <span class="math inline">\(h\)</span> is a function called <em>kernel</em>.</p>
+<aside class="notes">
+<p>Last example of point process: the Hawkes point process, which is part of the Cox process family and has application in finance and environmental science. This process is typically defined on he half real line, and represent the time of occurrence of some event (for instance an earthquake and its aftershocks). It is a self-exciting process because the ocurrence of one event increases the probability of occurrence of another event right after (but this probability decreases with time).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="main-examples-of-point-processes-5" class="slide level2">
 <h2>Main examples of point processes</h2>
@@ -798,6 +915,28 @@ N(B) \sim D(B)
 </section>
 <section id="properties-and-theorems-on-point-processes-3" class="slide level2">
 <h2>Properties and theorems on point processes</h2>
+<h3 id="waiting-times">Waiting times</h3>
+<p>In the context of 1D point processes. An important concept is the waiting time.</p>
+<p>Let us consider a 1D point process <span class="math inline">\(N = \{T_i\}_i\)</span> defined on <span class="math inline">\(\mathbb{S} = [0, +\infty)\)</span>. The waiting times are defined as the time difference between to events:</p>
+<p><span class="math display">\[
+\Delta T_i = T_i - T_{i-1}
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important remark for simulation</strong></p>
+</div>
+<div class="callout-content">
+<p>In some setting, we can derive the distribution of these <span class="math inline">\(\Delta T_i\)</span>. For instance, for a 1D homogeneous Poisson point process, <span class="math inline">\(\Delta T_i \overset{\text{i.i.d.}}{\sim} \text{Exp}(\lambda)\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="properties-and-theorems-on-point-processes-4" class="slide level2">
+<h2>Properties and theorems on point processes</h2>
 <h3 id="operations-on-point-processes">Operations on point processes</h3>
 <p>To create new point processes out of existing one, we can use several operations:</p>
 <ul>
@@ -903,7 +1042,7 @@ N(B) \sim D(B)
 <div class="callout-content">
 <ul>
 <li>We first simulate a homogeneous Poisson point process <span class="math inline">\(N_h\)</span> on <span class="math inline">\([0, T)\)</span> with rate <span class="math inline">\(\lambda^* \ge \lambda_\text{max}\)</span>.</li>
-<li>We then apply a thinning operation on this realisation, using <span class="math inline">\(p(x)-\text{thinning}\)</span>:
+<li>We then apply a thinning operation on this realisation, using <span class="math inline">\(p(t)-\text{thinning}\)</span>:
 <ul>
 <li>For any point <span class="math inline">\(t_i \in N_h\)</span>, keep this point with probability <span class="math inline">\(p(t_i) = \frac{\lambda(t_i)}{\lambda^*}\)</span>, otherwise discard it.</li>
 </ul></li>
@@ -1112,7 +1251,17 @@ N(B) \sim D(B)
 <section id="mutlivariate-simulation-5" class="slide level2">
 <h2>Mutlivariate simulation</h2>
 <h3 id="hawkes-processes">Hawkes processes</h3>
+<p>One can consider several interconnected Hawkes point processes: <span class="math inline">\((N_1, N_2, \dots, N_k)\)</span> such that conditionally on their history <span class="math inline">\((\mathcal{H}^1_s, \mathcal{H}^2_s, \dots, \mathcal{H}^k_s)\)</span> at time <span class="math inline">\(s\)</span>, they have the following intensity function:</p>
+<p><span class="math display">\[
+\lambda^i(s|\mathcal{H}^1_s, \mathcal{H}^2_s, \dots, \mathcal{H}^k_s) = \mu_i(s) + \sum_{j=1}^k \left[\sum_{T_l^j \in N_j, ~~ T_l^j &lt; s} h_{j,i}(s-T_l^j)\right]
+\]</span> where <span class="math inline">\(h_{j,i}(.)\)</span> is the kernel function, that parameters the influence of the process <span class="math inline">\(N_j\)</span> on <span class="math inline">\(N_i\)</span>.</p>
+<p>For instance, one can opt for <span class="math inline">\(h_{j,i}(s) = \alpha_{j,i}e^{-\beta_{j,i}s}\)</span>, where <span class="math inline">\(\alpha = (\alpha_{j,i})_{j,i}\)</span> and <span class="math inline">\(\beta = (\beta_{j,i})_{j,i}\)</span> are matrices of parameters.</p>
 </section>
+<section id="mutlivariate-simulation-6" class="slide level2">
+<h2>Mutlivariate simulation</h2>
+<h3 id="hawkes-processes-1">Hawkes processes</h3>
+
+<img data-src="presentation_files/figure-revealjs/hawkes_2d_simulation-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">The dashed black line is the conditional intensity function and the blue points are the occurrence times for the three processes.</p></section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 <h3 id="code-and-presentation">Code and presentation</h3>
@@ -1153,40 +1302,6 @@ Ogata, Y. 1981. <span>“On <span>Lewis</span>’ Simulation Method for Point Pr
 Schoenberg, Frederic Paik. 2011. <span>“Introduction to <span>Point</span> <span>Processes</span>.”</span> In <em>Wiley <span>Encyclopedia</span> of <span>Operations</span> <span>Research</span> and <span>Management</span> <span>Science</span></em>. John Wiley &amp; Sons, Ltd. <a href="https://doi.org/10.1002/9780470400531.eorms0425">https://doi.org/10.1002/9780470400531.eorms0425</a>.
 </div>
 </div>
-</section>
-<section id="additional-theme-classes" class="slide level2">
-<h2>Additional theme classes</h2>
-<h3 id="some-extra-things-you-can-do-with-the-clean-theme">Some extra things you can do with the clean theme</h3>
-<p>Special classes for emphasis</p>
-<ul>
-<li><code>.alert</code> class for default emphasis, e.g.&nbsp;<span class="alert">important note</span>.</li>
-<li><code>.fg</code> class for custom colour, e.g.&nbsp;<span class="fg" style="--col: #e64173">important note</span>.</li>
-<li><code>.bg</code> class for custom background, e.g.&nbsp;<span class="bg" style="--col: #e64173">important note</span>.</li>
-</ul>
-<p>Cross-references</p>
-<ul>
-<li><code>.button</code> class provides a Beamer-like button, e.g. <a href="#/sec-summary"><span class="button">Summary</span></a></li>
-</ul>
-</section>
-<section id="want-more" class="slide level2">
-<h2>Want more?</h2>
-<h3 id="see-our-longer-demo-slides">See our longer demo slides</h3>
-<p>We’ve deliberarely kept this template lean, to get you up and running as fast as possible.</p>
-<p>We provide a separate <a href="https://github.com/grantmcdermott/quarto-revealjs-clean-demo">demo template</a>, with more examples for integrating code, tables, figures, etc.</p>
-<ul>
-<li>See the live demo slides <a href="https://grantmcdermott.com/quarto-revealjs-clean-demo/template.html">here</a>.</li>
-</ul>
-</section>
-<section id="sec-summary" class="slide level2">
-<h2>Summary</h2>
-<h3 id="a-minimalist-and-elegant-presentation-theme">A minimalist and elegant presentation theme</h3>
-<p>The Quarto reveal.js clean theme aims to be a minimalist and elegant presention theme. Here are some options to get you started:</p>
-<p>Add the theme to an existing project.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">quarto</span> install extension grantmcdermott/quarto-revealjs-clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>… or, create a new project using this slide deck as a lean template.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">quarto</span> use template grantmcdermott/quarto-revealjs-clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>… or, create a new project using the demo slide deck as a full template.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">quarto</span> use template grantmcdermott/quarto-revealjs-clean-demo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="footer footer-default">
 
 </div>

@@ -18,6 +18,7 @@ nocite: |
   @*
 ---
 
+
 <!--
 before rendering execute in the terminal:
 - quarto install extension grantmcdermott/quarto-revealjs-clean
@@ -34,25 +35,25 @@ before rendering execute in the terminal:
   - Main examples of point processes
     - Poisson point processes
     - Cox point processes
-    - Hawkes point process
+    - Hawkes point processes
   - Some properties of point processes
     - Marked point processes
     - Simple point processes
     - Mean measure and intenisty function
     - Rescaling theorem
+    - Waiting times
     - Operations on point processes
 :::
 
 ::: {.column width="50%"}
 ### Simulating point processes
-  - Point processes 
+  - Poisson point processes 
     - Homogeneous Poisson point process (1D & 2D)
     - Non-homogeneous Poisson point process (1D & 2D)
   - Simulating a Hawkes point process
     - Univariate case
     - Multivariate case
 :::
-
 ::::
 
 # Theory {background-color="#40666e"}
@@ -72,7 +73,17 @@ A point *pattern* is a realisation of a point process.
 Phenomenon that can be modeled by point processes: occurrence time of earthquakes and aftershocks ($\mathbb{S} = [0, +\infty)$]), location of trees in a forest ($\mathbb{S} = \mathbb{R}^2$), impact locations of lightning in a storm ($\mathbb{S} = \mathbb{R}^2$)...
 :::
 
+::: {.notes}
+Consider a state space $\mathbb{S}$ (usually $\mathbb{R}$, $[0, +\infty)$, or $\mathbb{R}^n$).
 
+We know the stochastic processes which is a collection of random variables indexed by a 1D space. The point processes are kind of the extension of stochastic processes to multi-dimensional space. It can be interpreted in 2 ways:
+
+- A point process is a random set of points that lies within $\mathbb{S}$.
+
+- A point process can also be defined as a random counting measure, that counts the number of points in any subset of $\mathbb{S}$.
+
+A point *pattern* is a realisation of a point process. 
+:::
 
 ## Some basic notation
 
@@ -107,6 +118,14 @@ $$
 A point process is kind of a random variable that is indexed by sets from the state space $\mathbb{S}$. For instance, if $\mathbb{S} = [0, +\infty)$, Then the point process can be entirely described by the random variables $N_{[s, t)}$ or $N_{[0, t)} := N_t$.
 :::
 
+
+::: {.notes}
+There is a sort of duality in the notation of Point processes. 
+- Th first way to look at it is to consider the point process as a random set of points in $\mathbb{S}$.
+- The second way is to consider $N$ as a counting measure, that counts the number of points in any subregion $B$ of $\mathbb{S}$.
+Both ntation are equivalent, and sometime one notation is more convenient than the other and sometime the other one is more convenient, depending on the context.
+:::
+
 ## Some basic notation
 
 One can then compute the expectation of these indexed random variable (the expectation will always depend on the Borel set $B$ we consider):
@@ -114,7 +133,12 @@ One can then compute the expectation of these indexed random variable (the expec
 $$
 \mathbb{E}(N(B)) = \mathbb{E} \left[ \sum_{x_i \in N} 1_B(x_i) \right]
 $$
-Note theat this expectation is also called the *mean measure* of $N$
+Note that this expectation is also called the *mean measure* of $N$
+
+::: {.notes}
+The expectation is the expectation of the counting measure (we can't compute the expectation of a set of points)
+
+:::
 
 ## Main examples of point processes
 
@@ -122,7 +146,7 @@ Note theat this expectation is also called the *mean measure* of $N$
 
 Formally, a Poisson point process $N$ is a point process that satisfies the following properties:
 
-- The number of points $N(B)$ in any borel set $B \subset \mathbb{S}$ is a Poisson-distributed random variable with mean $\Lambda(B) = \lambda |B|$, where $|B|$ is the size of $B$ in $\mathbb{S}$.
+- The number of points $N(B)$ in any Borel set $B \subset \mathbb{S}$ is a Poisson-distributed random variable with mean $\Lambda(B) = \lambda |B|$, where $|B|$ is the size of $B$ in $\mathbb{S}$.
 - If $B_1, \dots, B_k$ are disjoint ($B_i \cap B_j = \emptyset, i \neq j$), then $N(B_1), \dots, N(B_k)$ are independent.
 
 We can therefore write:
@@ -131,11 +155,19 @@ $$
 \forall B \subset \mathbb{S},\quad \forall n \in \mathbb{N}, \quad \mathbb{P}(N(B) = n) = e^{-\lambda |B|}\frac{(\lambda |B|)^n}{n!}
 $$
 
+::: {.notes}
+The Poisson process is the canonical example of point processes. It plays approximately the same role as the uniform distribution for classical random variables. It is defined as the following:
+
+- The number of points $N(B)$ in any Borel set $B \subset \mathbb{S}$ is a Poisson-distributed random variable with mean $\Lambda(B) = \lambda |B|$, where $|B|$ is the size of $B$ in $\mathbb{S}$. (For instance the surface area in 2D, the volume in 3D, or the length (or duration) in 1D).
+- If $B_1, \dots, B_k$ are disjoint ($B_i \cap B_j = \emptyset, i \neq j$), then $N(B_1), \dots, N(B_k)$ are independent.
+:::
+
+
 ## Main examples of point processes
 
 ### Example of a 1D homogeneous Poisson point process
 
-```{r Poisson_process_example, include = TRUE, echo = FALSE}
+```{r Poisson_process_example, include = TRUE, echo = FALSE, fig.cap = 'The "random set of point" is in blue, the counting measure $N_{[0, t)} := N_t$ is in red and the intensity function is the black dashed line.', fig.height=10}
 
 T_tot = 10
 lambda = 5
@@ -154,6 +186,7 @@ plot(t, N_t, col = 'red', type = 'l', ylab = expression(N[t]), xlab = "Time", yl
 points(point_pattern, rep(0, N), pch = 8, col = 'blue')
 abline(a = lambda, b = 0, lty = "dashed")
 ```
+
 
 ## Main examples of point processes
 
@@ -176,11 +209,17 @@ $$
 The function $\lambda(x), x \in \mathbb{S}$ is called the intensity function of the Poisson process. In regions of $\mathbb{S}$ where $\lambda(x)$ is high, the point process is likely to have a lot of points, whereas in regions of $\mathbb{S}$ where $\lambda(x)$ is low, the point process is likely to have fewer points.
 :::
 
+::: {.notes}
+The non-homogeneous poisson process is essentially the same as the homogeneous one but we change the mean function, basically we let $\lambda$ vary with $x \in \mathbb{S}$, but needs to be non-negative. The homogeneous Poisson point process is just a non-homogeneous poisson point process with $\lambda = \text{cst}$.
+
+Note however that the intensity function $\lambda$ is deterministic.
+:::
+
 ## Main example of point processes
 
 ### Example of a 1-D Non-homogeneous Poisson point process
 
-```{r non_homogeneous_poisson_process, include = TRUE, echo = FALSE}
+```{r non_homogeneous_poisson_process, include = TRUE, echo = FALSE, fig.cap = 'The "random set of point" is in blue, the counting measure $N_{[0, t)} := N_t$ is in red and the intensity function is the black dashed line.', fig.height=10}
 
 ## 1-D Simulation (Ex: Clients arrival in a restaurant at lunch time)
 
@@ -210,8 +249,12 @@ for (point in final_point_pattern){
 plot(x, intensity(x, T_tot, lam = 5), type = 'l', ylab = expression(N[t]), xlab = "State space", lty = 'dashed', ylim = c(0, max(N_t)), main = "Non-homogeneous 1-D Poisson point process")
 lines(x, N_t, col = 'red')
 points(final_point_pattern, rep(0, length(final_point_pattern)), pch = 8, col = 'blue')
-
 ```
+
+
+::: {.notes}
+The only difference here is the non constant so-called intensity function (which I will define properly later on). It basically changes the rates at which the points are coming: the higher the rates, the more points occur.
+:::
 
 ## Main examples of point processes
 
@@ -228,6 +271,11 @@ The Cox point process is a generalisation of the Poisson point process that rela
 If we consider the Gaussian point processes to be the multidimensional generalisation of Gaussian processes, then we can define the *log-Gaussian* Cox point process which has the intensity function $\lambda(y) = e^{X(y)}$, where $X(y)$ is a Gaussian point process.
 :::
 
+
+::: {.notes}
+The Cox process generalises the Poisson process by letting $\lambda$ be random. The mean measure $\Lambda(B)$ is now a random variable that depends on the sub region $B$ where it is evaluated.
+:::
+
 ## Main examples of point processes
 
 ### The Hawkes (self-exciting) point process
@@ -239,7 +287,11 @@ The Hawkes point process is part of the Cox point process family, it is usually 
 $$
 \lambda(s |\mathcal{H}_s)= \mu(s) + \int_{-\infty}^s h(s-t)dN_t = \mu(s) + \sum_{T_i<s}h(s-T_i)
 $$
-where $N=\{T_i\}_i$ and $h$ is a function called kernel.
+where $N=\{T_i\}_i$ and $h$ is a function called *kernel*.
+
+::: {.notes}
+Last example of point process: the Hawkes point process, which is part of the Cox process family and has application in finance and environmental science. This process is typically defined on he half real line, and represent the time of occurrence of some event (for instance an earthquake and its aftershocks). It is a self-exciting process because the ocurrence of one event increases the probability of occurrence of another event right after (but this probability decreases with time).
+:::
 
 ## Main examples of point processes
 
@@ -421,6 +473,22 @@ Which is a homogeneous Poisson process with rate 1 !
 This can be really handy in the context of model validation or assessment of the goodness-of-fit. Indeed, after infering the mean measure parametrically or non-parametrically with some point *patterns*, one can apply the above scaling transformation to the pattern and test whether this new pattern is a homogeneous point pattern with unit rate.
 :::
 
+## Properties and theorems on point processes
+
+### Waiting times
+
+In the context of 1D point processes. An important concept is the waiting time.
+
+Let us consider a 1D point process $N = \{T_i\}_i$ defined on $\mathbb{S} = [0, +\infty)$. The waiting times are defined as the time difference between to events:
+
+$$
+\Delta T_i = T_i - T_{i-1}
+$$
+
+:::{.callout-note}
+## Important remark for simulation 
+In some setting, we can derive the distribution of these $\Delta T_i$. For instance, for a 1D homogeneous Poisson point process, $\Delta T_i \overset{\text{i.i.d.}}{\sim} \text{Exp}(\lambda)$.
+:::
 
 ## Properties and theorems on point processes
 
@@ -507,7 +575,7 @@ Recalling the definition of the non-homogeneous Poisson process $N$, we suppose 
 ## Simulation algorithm on $[0, T)$
 
 - We first simulate a homogeneous Poisson point process $N_h$ on $[0, T)$ with rate $\lambda^* \ge \lambda_\text{max}$.
-- We then apply a thinning operation on this realisation, using $p(x)-\text{thinning}$:
+- We then apply a thinning operation on this realisation, using $p(t)-\text{thinning}$:
   - For any point $t_i \in N_h$, keep this point with probability $p(t_i) = \frac{\lambda(t_i)}{\lambda^*}$, otherwise discard it.
 
 The resulting points is a realisation of $N$.
@@ -516,6 +584,7 @@ The resulting points is a realisation of $N$.
 ## Simulation of Poisson point processes
 
 ### Non-homogeneous Poisson point processes.
+
 
 ```{r example non_hom_poisson_process_code, include = TRUE, echo = TRUE}
 intensity = function(t, T = T_tot, lam = 1){
@@ -553,6 +622,8 @@ This method is essentially an accept-reject algorithm and therfore has the same 
 
 One way to (partly) circumvent this bottleneck is to use an MCMC algorithm
 :::
+
+
 
 
 ## Simulation of Poisson point processes
@@ -769,11 +840,99 @@ contour(x, y, z, add = T, lwd =  2, xlab = "x", ylab = "y", main = "Point proces
 
 ### Hawkes processes
 
+One can consider several interconnected Hawkes point processes: $(N_1, N_2, \dots, N_k)$ such that conditionally on their history $(\mathcal{H}^1_s, \mathcal{H}^2_s, \dots, \mathcal{H}^k_s)$ at time $s$, they have the following intensity function:
+
+$$
+\lambda^i(s|\mathcal{H}^1_s, \mathcal{H}^2_s, \dots, \mathcal{H}^k_s) = \mu_i(s) + \sum_{j=1}^k \left[\sum_{T_l^j \in N_j, ~~ T_l^j < s} h_{j,i}(s-T_l^j)\right]
+$$
+where $h_{j,i}(.)$ is the kernel function, that parameters the influence of the process $N_j$ on $N_i$. 
+
+For instance, one can opt for $h_{j,i}(s) = \alpha_{j,i}e^{-\beta_{j,i}s}$, where $\alpha = (\alpha_{j,i})_{j,i}$ and $\beta = (\beta_{j,i})_{j,i}$ are matrices of parameters.
+
+## Mutlivariate simulation
+
+### Hawkes processes
+
+```{r hawkes_2d_simulation, include = TRUE, echo = FALSE, fig.cap = "The dashed black line is the conditional intensity function and the blue points are the occurrence times for the three processes."}
+###### 2D Hawkes process simulation 
+
+kernel_function = function(t, alpha, beta){
+  return(alpha * exp(-beta * t) * (t>0))
+}
+
+d = 3
+
+T_tot = 2
+
+base_rate = matrix(data = c(1,6,3), nrow = d)
+alpha = matrix(data = 1, nrow = d, ncol = d)
+beta = matrix(data = 3, nrow = d, ncol = d)
+
+time_points = vector("list", 2)
+for (i in 1:d){
+  time_points[[i]] = numeric(0)
+}
+
+s = 0
+
+while (s<T_tot){
+  lambda = rep(0, d)
+  for (m in 1:d){
+    lambda[m] = base_rate[m] 
+    for (n in 1:d){
+      lambda[m] = lambda[m] + sum(kernel_function(s-time_points[[n]], alpha = alpha[m,n], beta = beta[m,n])) #+ sum(alpha[m, n] * exp(-beta[m, n] * (s-time_points[[n]]))) 
+    }
+  }
+  lambda0 = sum(lambda)
+  # print(paste0("lambda =", lambda0))
+  u = runif(1)
+  w = -log(u)/lambda0
+  s = s + w
+  test = runif(1)
+  lambda_test = rep(0, d)
+  for (m in 1:d){
+    lambda_test[m] = base_rate[m] 
+    for (n in 1:d){
+      lambda_test[m] = lambda_test[m] + sum(kernel_function(s-time_points[[n]], alpha = alpha[m,n], beta = beta[m,n])) #+ sum(alpha[m, n] * exp(-beta[m, n] * (s-time_points[[n]]))) 
+    }
+  }
+  if (test * lambda0 <= sum(lambda_test)){
+    k = 1
+    while (test * lambda0 > sum(lambda_test[1:k])){
+      k = k+1
+    }
+    time_points[[k]] = c(time_points[[k]], s)
+  }
+}
+
+time_points = sapply(time_points, function(x) x[x<=T_tot])
+N = 750
+t = seq(0, T_tot, length.out = N)
+
+lambda_t = matrix(NA, nrow = d, ncol = N)
+
+for (i in 1:N){
+  lambda = rep(0, d)
+  for (m in 1:d){
+    lambda[m] = base_rate[m] 
+    for (n in 1:d){
+      lambda[m] = lambda[m] + sum(kernel_function(t[i]-time_points[[n]], alpha = alpha[m,n], beta = beta[m,n])) #+ sum(alpha[m, n] * exp(-beta[m, n] * (s-time_points[[n]]))) 
+    }
+  }
+  lambda_t[,i]= lambda
+}
+
+par(mfrow = c(d,1), mar = c(2,2,2,2))
+
+for (i in 1:d){
+  plot(t, lambda_t[i,], type = 'l', lty = "dashed", ylim = c(0, max(lambda_t[i,])), xlab = "", ylab = expression(lambda(t)))
+  points(time_points[[i]], rep(0, length(time_points[[i]])), col = "blue", pch = 8)
+}
+```
 
 ## References
 
 ### Code and presentation
-
 
 [GitHub repository](https://github.com/EtienneCap/PointProcessSim)
 
@@ -781,58 +940,3 @@ contour(x, y, z, add = T, lwd =  2, xlab = "x", ylab = "y", main = "Point proces
 
 ::: {#refs}
 :::
-
-
-## Additional theme classes
-
-### Some extra things you can do with the clean theme
-
-Special classes for emphasis
-
-- `.alert` class for default emphasis, e.g. [important note]{.alert}.
-- `.fg` class for custom colour, e.g. [important note]{.fg style="--col: #e64173"}.
-- `.bg` class for custom background, e.g. [important note]{.bg style="--col: #e64173"}.
-
-Cross-references
-
-- `.button` class provides a Beamer-like button, e.g.
-[[Summary]{.button}](#sec-summary)
-
-## Want more?
-
-### See our longer demo slides
-
-We've deliberarely kept this template lean, to get you up and running as fast as
-possible.
-
-We provide a separate
-[demo template](https://github.com/grantmcdermott/quarto-revealjs-clean-demo),
-with more examples for integrating code, tables, figures, etc.
-
-  - See the live demo slides
-  [here](https://grantmcdermott.com/quarto-revealjs-clean-demo/template.html).
-
-## Summary {#sec-summary}
-
-### A minimalist and elegant presentation theme
-
-The Quarto reveal.js clean theme aims to be a minimalist and elegant presention
-theme. Here are some options to get you started:
-
-Add the theme to an existing project.
-
-```{.bash}
-quarto install extension grantmcdermott/quarto-revealjs-clean
-```
-
-... or, create a new project using this slide deck as a lean template.
-
-```{.bash}
-quarto use template grantmcdermott/quarto-revealjs-clean
-```
-
-... or, create a new project using the demo slide deck as a full template.
-
-```{.bash}
-quarto use template grantmcdermott/quarto-revealjs-clean-demo
-```
